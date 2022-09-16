@@ -1,9 +1,12 @@
 const apiKey = document.currentScript.getAttribute("apiKey");
+const src = document.currentScript.getAttribute("src");
 const successRedirectionUrl = document.currentScript.getAttribute(
   "successfulRedirection"
 );
-const chipdealsPaymentPageUrl =
-  "./assets/payment.html";
+const chipdealsPaymentPageUrl = src.replace(
+  /(.+)lib(\.min)?\.js/,
+  "$1/assets/payment.html"
+);
 
 window.onload = async function () {
   initChipdealsButtonWatching();
