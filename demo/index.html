@@ -1,0 +1,42 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="http://localhost:8081/javascript/lib.js" apiKey="test_FOdigzgSopV8GZggZa89" successfulRedirection="https://google.com"></script>
+    <!-- <script src="../lib.js" apiKey="test_FOdigzgSopV8GZggZa89" successfulRedirection="https://google.com"></script> -->
+    <title>Document</title>
+</head>
+
+<body>
+    <button class="paymentButton" amount="1000" currency="XOF" img="./demo.png" name="Payment Api Access">
+        with name picture
+    </button>
+    <button class="paymentButton" amount="3000" addFeeToUser>
+        with fee to users
+    </button>
+
+    <script>
+        document.addEventListener("chipdealsPaymentSucceeded", (event) => {
+            console.log(event)
+            console.log(event.detail.description)
+        })
+        document.addEventListener("chipdealsPaymentFailed", (event) => {
+            console.log(event)
+            console.log(event.detail.description)
+        })
+        document.addEventListener("chipdealsPaymentUpdated", (event) => {
+            console.log(event)
+            console.log(event.detail.description)
+        })
+        setTimeout(() => {
+            document.querySelectorAll(".paymentButton").forEach((button) => {
+                button.classList.add(['chipdeals-button'])
+            })
+        }, 100)
+    </script>
+
+</body>
+
+</html>
