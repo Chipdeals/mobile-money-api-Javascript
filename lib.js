@@ -1,9 +1,9 @@
 const apiKey = document.currentScript.getAttribute("apiKey");
+const src = document.currentScript.getAttribute("src");
 const successRedirectionUrl = document.currentScript.getAttribute(
   "successfulRedirection"
 );
-const chipdealsPaymentPageUrl =
-  "./assets/payment.html";
+const chipdealsPaymentPageUrl = "https://chipdeals.github.io/mobile-money-api-Javascript/assets/payment.html";
 
 window.onload = async function () {
   initChipdealsButtonWatching();
