@@ -129,6 +129,7 @@ class ChipdealsJsWidget {
 
   static generateImgUrlFrom(imgPath) {
     if (!imgPath) return "";
+    if (/^http/.test(imgPath)) return imgPath;
     const currentFileFolder = window.location.href.replace(
       /(.+)\/(.+?)?$/,
       "$1"
@@ -173,7 +174,7 @@ class ChipdealsJsWidget {
   static getPaymentPageBaseUrl() {
     const libVersion = getLibVersion;
     const chipdealsPaymentPageUrl =
-      "https://rawcdn.githack.com/Chipdeals/mobile-money-api-Javascript/{libVersion}/demo/index.html";
+      "https://rawcdn.githack.com/Chipdeals/mobile-money-api-Javascript/{libVersion}/assets/payment.html";
     return chipdealsPaymentPageUrl.replace(/{libVersion}/, libVersion);
   }
 
