@@ -1,9 +1,10 @@
 const ChipdealsJsWidgetUserApiKey =
   document.currentScript.getAttribute("apiKey");
 
-const successRedirectionUrl = document.currentScript.getAttribute(
-  "successfulRedirection"
-);
+const ChipdealsJsWidgetSuccessRedirectionUrl =
+  document.currentScript.getAttribute("successfulRedirection");
+
+const ChipdealsJsWidgetLibSrc = document.currentScript.getAttribute("src");
 
 window.onload = async function () {
   ChipdealsJsWidget.initChipdealsButtonWatching();
@@ -179,10 +180,9 @@ class ChipdealsJsWidget {
   }
 
   static getLibVersion() {
-    const libSrc = document.currentScript.getAttribute("src");
     const libSrcRegex =
       /https:\/\/cdn.jsdelivr.net\/gh\/Chipdeals\/mobile-money-api-Javascript@(.+?)\/lib.min.js(.+)?/;
-    const libVersion = libSrc.replace(libSrcRegex, "$1");
+    const libVersion = ChipdealsJsWidgetLibSrc.replace(libSrcRegex, "$1");
     return libVersion;
   }
 
@@ -261,8 +261,8 @@ class ChipdealsJsWidget {
   }
 
   static onPaymentSucceeded(eventData) {
-    if (successRedirectionUrl) {
-      setTimeout(redirectTo, 3000, successRedirectionUrl);
+    if (ChipdealsJsWidgetSuccessRedirectionUrl) {
+      setTimeout(redirectTo, 3000, ChipdealsJsWidgetSuccessRedirectionUrl);
       return;
     }
     const eventName = "chipdealsPaymentSucceeded";
