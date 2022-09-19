@@ -11,7 +11,7 @@ You only need to have basics knowledge in Html and Css. If you Know Javascript, 
 
 ## Demo
 
-You can see the [demo page](https://rawcdn.githack.com/Chipdeals/mobile-money-api-Javascript/1.4.0/demo/index.html) of what you will be able to make
+You can see the [demo page](https://rawcdn.githack.com/Chipdeals/mobile-money-api-Javascript/1.4.1/demo/index.html) of what you will be able to make
 
 ## Integrating the widget is very simple
 
