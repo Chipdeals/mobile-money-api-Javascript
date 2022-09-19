@@ -1,0 +1,137 @@
+@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Josefin+Slab:wght@400;500;700&display=swap');
+
+:root{
+  --para-text: 'Josefin Slab', serif;
+}
+
+*{
+  box-sizing: border-box;
+}
+body{
+  font-family: 'Oswald', sans-serif;
+  min-height: 100vh;
+  margin: 0;
+}
+
+section{
+  padding: 5%;
+  padding-top: 0px;
+}
+.section-subtitle, .section-title{
+  text-align: center;
+}
+.section-subtitle{
+  font-size: 1rem;
+  text-transform: uppercase;
+  margin-bottom: 0;
+}
+.section-title{
+  font-size: 2.8rem;
+  text-transform: uppercase;
+  margin-top: 0;
+  font-weight: 500;
+  margin-bottom: 40px;
+}
+.bestSelling-beers{
+  display: flex;
+  flex-flow: row;
+  justify-content:center;
+  align-items: center;
+  gap: 30px;
+}
+.bs-card{
+  width: 300px;
+  height: 600px;
+}
+.bs-card-img{
+  height: 300px;
+  width: 100%;
+  padding: 10%;
+  background-position: center 45%;
+  background-size: 25%;
+  background-repeat: no-repeat;
+  background-color: #f3f3f4;
+}
+#bs-img-1{
+  background-image: url(https://raw.githubusercontent.com/JoelLH/Images/main/Scrimba%20Images/beerbottle.png);
+}
+#bs-img-2{
+  background-image: url(https://raw.githubusercontent.com/JoelLH/Images/main/Scrimba%20Images/beerbottle1.png);
+}
+#bs-img-3{
+  background-image: url(https://raw.githubusercontent.com/JoelLH/Images/main/Scrimba%20Images/beerbottle2.png);
+}
+.bs-card-body{
+  padding: 10px 0;
+  
+}
+.bs-card-header{
+  height: 50px;
+  margin-bottom: 10px;
+}
+.bs-card-title{
+  font-size: 1.3rem;
+  text-transform: uppercase;
+  color: inherit;
+  font-weight: 700;
+  text-decoration: none;
+  line-height: 10px;
+}
+.bs-card-title:hover{
+  text-decoration: underline;
+}
+.bs-beer-data{
+  font-family: var(--para-text);
+  font-size: 1.1rem;
+  font-weight: 500;
+  display: flex;
+  flex-flow: column;
+  gap: 15px;
+  padding-bottom: 15px;
+  border-bottom: 2px solid #aaa;
+}
+.bs-beer-footer{
+  padding-top: 10px;
+  display: flex;
+  flex-flow: row;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+  z-index: 0;
+}
+.price{
+  font-family: var(--para-text);
+  font-weight: 500;
+  font-size: 1.1rem;
+}
+.bs-card-btn{
+  border: 1px solid black;
+  padding: 5px 1.2rem;
+  font-weight: 700;
+  font-size: .85rem;
+  letter-spacing: .05em;
+  cursor: pointer;
+  background-color: white;
+  transition: all ease-in-out .3s;
+}
+.bs-card-btn::after{
+  content:"";
+  width: 80px;
+  height: 30px;
+  right: -2px;
+  top: 12px;
+  border: 1px solid black;
+  position: absolute;
+  z-index: -1;
+  transition: all ease-in-out .3s;
+  background-color: black;
+}
+.bs-card-btn:hover{
+  background-color: black;
+  color: white;
+}
+.bs-card-btn:hover::after{
+  right: 0px;
+  top: 10px;
+}
