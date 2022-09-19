@@ -250,8 +250,8 @@ class ChipdealsJsWidget {
 
   static onStateChanged(eventData) {
     ChipdealsJsWidget.onPaymentStateChanged(eventData);
-    if (eventData.status == "success") onPaymentSucceeded(eventData);
-    else if (eventData.status == "error") onPaymentFailed(eventData);
+    if (eventData.status == "success") ChipdealsJsWidget.onPaymentSucceeded(eventData);
+    else if (eventData.status == "error") ChipdealsJsWidget.onPaymentFailed(eventData);
   }
 
   static onPaymentStateChanged(eventData) {
