@@ -172,7 +172,7 @@ class ChipdealsJsWidget {
   }
 
   static getPaymentPageBaseUrl() {
-    const libVersion = getLibVersion;
+    const libVersion = ChipdealsJsWidget.getLibVersion();
     const chipdealsPaymentPageUrl =
       "https://rawcdn.githack.com/Chipdeals/mobile-money-api-Javascript/{libVersion}/assets/payment.html";
     return chipdealsPaymentPageUrl.replace(/{libVersion}/, libVersion);

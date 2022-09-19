@@ -28,7 +28,7 @@ Test ApiKey: ` ` test_FOdigzgSopV8GZggZa89 ` `
 #Add these payment libraries to your script section. It is either in your head tags or at the end of your body tag
 
 ```html
-<script src="https://cdn.jsdelivr.net/gh/Chipdeals/mobile-money-api-Javascript@1.4.0/lib.min.js" apiKey="test_FOdigzgSopV8GZggZa89" successfulRedirection="https://chipdeals.me/mobile-money">
+<script src="https://cdn.jsdelivr.net/gh/Chipdeals/mobile-money-api-Javascript@1.4.1/lib.min.js" apiKey="test_FOdigzgSopV8GZggZa89" successfulRedirection="https://chipdeals.me/mobile-money">
 </script>
 ```
 
