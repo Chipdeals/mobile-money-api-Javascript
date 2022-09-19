@@ -262,7 +262,7 @@ class ChipdealsJsWidget {
 
   static onPaymentSucceeded(eventData) {
     if (ChipdealsJsWidgetSuccessRedirectionUrl) {
-      setTimeout(redirectTo, 3000, ChipdealsJsWidgetSuccessRedirectionUrl);
+      setTimeout(ChipdealsJsWidget.redirectTo, 3000, ChipdealsJsWidgetSuccessRedirectionUrl);
       return;
     }
     const eventName = "chipdealsPaymentSucceeded";
