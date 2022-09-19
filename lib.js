@@ -159,7 +159,7 @@ class ChipdealsJsWidget {
   }
 
   static buildPaymentPageUrl(paymentInfo) {
-    let url = ChipdealsJsWidget.getPaymentPageBaseUrl + "?";
+    let url = ChipdealsJsWidget.getPaymentPageBaseUrl() + "?";
     url += "&apiKey=" + ChipdealsJsWidgetUserApiKey;
     url += "&amount=" + paymentInfo.amount;
     url += "&currency=" + paymentInfo.currency;
