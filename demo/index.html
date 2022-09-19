@@ -1,41 +1,88 @@
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="https://cdn.jsdelivr.net/gh/Chipdeals/mobile-money-api-Javascript@1.1.0/lib.min.js" apiKey="test_FOdigzgSopV8GZggZa89" successfulRedirection="https://google.com"></script>
-    <title>Document</title>
+    <title>Demo Chipdeals Javascript widget </title>
+    <link rel="stylesheet" href="demo.css">
+    <script src="https://cdn.jsdelivr.net/gh/Chipdeals/mobile-money-api-Javascript@1.2.0/lib.min.js"
+        apiKey="test_FOdigzgSopV8GZggZa89" successfulRedirection="https://chipdeals.me/mobile-money">
+        </script>
 </head>
 
 <body>
-    <button class="paymentButton" amount="1000" currency="XOF" img="./demo.png" name="Payment Api Access">
-        with name picture
-    </button>
-    <button class="paymentButton" amount="3000" addFeeToUser>
-        with fee to users
-    </button>
-
-    <script>
-        document.addEventListener("chipdealsPaymentSucceeded", (event) => {
-            console.log(event)
-            console.log(event.detail.description)
-        })
-        document.addEventListener("chipdealsPaymentFailed", (event) => {
-            console.log(event)
-            console.log(event.detail.description)
-        })
-        document.addEventListener("chipdealsPaymentUpdated", (event) => {
-            console.log(event)
-            console.log(event.detail.description)
-        })
-        setTimeout(() => {
-            document.querySelectorAll(".paymentButton").forEach((button) => {
-                button.classList.add(['chipdeals-button'])
-            })
-        }, 100)
-    </script>
-
+    <section>
+        <h4 class="section-subtitle">
+            <a href="https://www.chipdeals.me/mobile-money">Chipdeals Mobile Money Api</a>
+        </h4>
+        <h2 class="section-title">
+            Demo Javascript widget
+        </h2>
+        <div class="bestSelling-beers">
+            <div class="bs-card">
+                <div class="bs-card-img" id="bs-img-1"></div>
+                <div class="bs-card-body">
+                    <div class="bs-card-header">
+                        <a href="#" class="bs-card-title">Bocanegra Pilsner</a>
+                    </div>
+                    <div class="bs-beer-data">
+                        <span class="bs-card-brewery para-font">Kona Brewing Co. </span>
+                        <span class="bs-card-brewery para-font">11% by Vol. </span>
+                    </div>
+                    <div class="bs-beer-footer">
+                        <span class="price">
+                            $8.50
+                        </span>
+                        <span class="bs-card-btn chipdeals-button" amount="1000" currency="USD">
+                            ORDER
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="bs-card">
+                <div class="bs-card-img" id="bs-img-2"></div>
+                <div class="bs-card-body">
+                    <div class="bs-card-header">
+                        <a href="#" class="bs-card-title">Daciky Lager</a>
+                    </div>
+                    <div class="bs-beer-data">
+                        <span class="bs-card-brewery para-font">Kona Brewing Co. </span>
+                        <span class="bs-card-brewery para-font">11% by Vol. </span>
+                    </div>
+                    <div class="bs-beer-footer">
+                        <span class="price">
+                            $8.50
+                        </span>
+                        <span class="bs-card-btn">
+                            ORDER
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="bs-card">
+                <div class="bs-card-img" id="bs-img-3"></div>
+                <div class="bs-card-body">
+                    <div class="bs-card-header">
+                        <a href="#" class="bs-card-title">Bulners Crushed Red Berrys & Lime</a>
+                    </div>
+                    <div class="bs-beer-data">
+                        <span class="bs-card-brewery para-font">Kona Brewing Co. </span>
+                        <span class="bs-card-brewery para-font">11% by Vol. </span>
+                    </div>
+                    <div class="bs-beer-footer">
+                        <span class="price">
+                            $8.50
+                        </span>
+                        <span class="bs-card-btn">
+                            ORDER
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 </body>
 
 </html>

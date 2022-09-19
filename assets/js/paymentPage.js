@@ -505,7 +505,9 @@ const app = {
       this.checkCollectionStatus(collectionReference);
     },
     async checkCollectionStatus(collectionReference) {
-      const statusResponse = await Controller.checkStatus(collectionReference);
+      const statusResponse = await Controller.checkStatus(
+        collectionReference
+      );
       const statusCode = statusResponse.transaction?.statusMessageCode || 500;
       this.currentTransactionStatusCode = statusCode;
 
@@ -524,6 +526,11 @@ const app = {
 
       return formatter.format(amount).replace(/[a-zA-Z ]+/g, "");
     },
+
+    currencySymbol(currencyCode) {
+      return Commons.getCurrencySymbolFrom(currencyCode);
+    },
+
     sendTransactionStateChangedEvent() {
       const paymentChanged = "chipdealsIframeEvent-paymentStateChanged";
       var collectionData = {

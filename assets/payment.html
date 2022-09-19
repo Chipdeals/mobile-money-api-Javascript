@@ -441,6 +441,23 @@
 
         }
 
+        :root {
+            --black1: hsl(220deg 6% 9% / 80%);
+            --black2: hsl(220deg 5% 19%);
+            --black3: hsl(252deg 2% 25% / 80%);
+            --gray1: hsl(221deg 10% 42%);
+            --red1: hsl(4deg 30% 12%);
+            --red2: hsl(220deg 6% 17%);
+            --red3: hsl(4deg 69% 58%);
+            --green1: hsl(105deg 78% 41%);
+            --white1: hsl(227deg 13% 73%);
+            --white2: hsl(0deg 0% 100%);
+            --blue1: hsl(222deg 25% 15%);
+            --blue2: hsl(227deg 30% 14%);
+            --blue3: hsl(222deg 67% 52%);
+            --blue4: hsl(222deg 100% 61%);
+        }
+
 
 
         html,
@@ -452,6 +469,8 @@
             color: var(--white2) !important;
             background-color: var(--black1) !important;
             height: 100%;
+            backdrop-filter: blur(4px);
+            opacity: 0.9;
         }
 
         body {
@@ -1046,7 +1065,7 @@
                                     <div class="d-flex justify-content-between">
                                         <div class="d-inline-block colorGray">SOUS-TOTAL</div>
                                         <div class="d-inline-block ">{{formatAmount(product.amount,product.currency)}}
-                                            CFA
+                                            {{currencySymbol(product.currency)}}
                                         </div>
                                     </div>
                                     <div class="d-flex justify-content-between">
@@ -1055,7 +1074,7 @@
                                         </div>
                                         <div class="d-inline-block ">+
                                             {{formatAmount(feeAmount,product.currency)}}
-                                            CFA</div>
+                                            {{currencySymbol(product.currency)}}</div>
                                     </div>
                                 </div>
                                 <div class="hr"></div>
@@ -1065,7 +1084,7 @@
                                 <div class="d-inline-block my-auto">TOTAL</div>
                                 <div class="d-inline-block fs-4 ">
                                     {{formatAmount(totalAmount,product.currency)}}
-                                    CFA
+                                    {{currencySymbol(product.currency)}}
                                 </div>
                             </div>
 
