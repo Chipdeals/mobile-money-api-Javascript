@@ -13,9 +13,19 @@ product = {
   totalAmount: "",
 };
 
-const apiKey = new URLSearchParams(window.location.toString()).get("apiKey");
+const apiKey = queryParams.get("apiKey");
+const webhookUrl = queryParams.get("webhookUrl") || "";
 const assetsPath = ".";
-const serverBaseUrl = "https://apis.chipdeals.me/momo";
+let serverBaseUrl = "https://apis.chipdeals.me/momo";
+let isTest = !!queryParams.get("sandboxMode");
+if (isTest) {
+  serverBaseUrl = queryParams.get("apiUrl") || serverBaseUrl;
+}
+
+window.parent.postMessage(
+  { name: "chipdealsIframeEvent-paymentPageLoaded", detail: {} },
+  "*"
+);
 
 function grid(
   el,
@@ -152,8 +162,8 @@ const SelectDropdown = {
       </slot>
       <slot name="dropDownIcon">
         <span class="material-icons-outlined ms-1"
-          style="position: relative;font-size:15px; top: 3px">
-          keyboard_arrow_down
+          style="position: relative;font-size:15px; top: -1px; width: 10px">
+          <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" ><path d="M8.12 9.29L12 13.17l3.88-3.88c.39-.39 1.02-.39 1.41 0 .39.39.39 1.02 0 1.41l-4.59 4.59c-.39.39-1.02.39-1.41 0L6.7 10.7c-.39-.39-.39-1.02 0-1.41.39-.38 1.03-.39 1.42 0z"/></svg>
         </span>
       </slot>
     </div>
@@ -200,7 +210,7 @@ const SelectDropdown = {
             <div class="ms-3">
               <span class="material-icons-outlined mx-auto selectedIcon"
           style="color:#1FBAD6; top: -2px">
-            check
+          <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="#1FBAD6"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M9 16.17L5.53 12.7c-.39-.39-1.02-.39-1.41 0-.39.39-.39 1.02 0 1.41l4.18 4.18c.39.39 1.02.39 1.41 0L20.29 7.71c.39-.39.39-1.02 0-1.41-.39-.39-1.02-.39-1.41 0L9 16.17z"/></svg>
         </span>
             </div>
           </div>
@@ -488,6 +498,7 @@ const app = {
         senderPhoneNumber: phoneNumber,
         amount: this.totalAmount,
         currency: this.product.currency,
+        webhookUrl: webhookUrl,
         // email: this.email,
         // paymentMethod: this.selectedPaymentMethod.name,
       };
@@ -505,9 +516,7 @@ const app = {
       this.checkCollectionStatus(collectionReference);
     },
     async checkCollectionStatus(collectionReference) {
-      const statusResponse = await Controller.checkStatus(
-        collectionReference
-      );
+      const statusResponse = await Controller.checkStatus(collectionReference);
       const statusCode = statusResponse.transaction?.statusMessageCode || 500;
       this.currentTransactionStatusCode = statusCode;
 
