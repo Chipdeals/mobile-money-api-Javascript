@@ -214,7 +214,7 @@ class ChipdealsJsWidget {
     component.style.position = "fixed";
     component.style.top = "15px";
     component.style.right = "15px";
-    component.style.zIndex = "100001";
+    component.style.zIndex = "1000001";
     component.style.color = "hsl(221deg 10% 90%)";
     component.style.fontSize = "30px";
     component.style.lineHeight = "1em";
@@ -239,22 +239,11 @@ class ChipdealsJsWidget {
     component.style.left = "calc(50% - 50px)";
     component.style.width = "100px";
     component.style.height = "100px";
+    component.style.zIndex = "1000000";
   }
 
   static showLoadingComponent(component) {
     document.body.appendChild(component);
-  }
-
-  static attachComponentsToClose(
-    paymentComponent,
-    closeComponent,
-    loadingComponent
-  ) {
-    closeComponent.addEventListener("click", () => {
-      document.body.removeChild(paymentComponent);
-      document.body.removeChild(closeComponent);
-      document.body.removeChild(loadingComponent);
-    });
   }
 
   static buildPaymentPageUrl(paymentInfo) {
@@ -308,13 +297,26 @@ class ChipdealsJsWidget {
     component.style.top = "0";
     component.style.left = "0";
     component.style.border = "none";
-    component.style.zIndex = "100000";
+    component.style.zIndex = "1000000";
   }
 
   static showPaymentComponent(component) {
     document.body.appendChild(component);
     component.focus();
   }
+
+  static attachComponentsToClose(
+    paymentComponent,
+    closeComponent,
+    loadingComponent
+  ) {
+    closeComponent.addEventListener("click", () => {
+      document.body.removeChild(paymentComponent);
+      document.body.removeChild(closeComponent);
+      document.body.removeChild(loadingComponent);
+    });
+  }
+
   static initChipdealsEventListening() {
     window.addEventListener("message", ChipdealsJsWidget.onMessage);
   }
