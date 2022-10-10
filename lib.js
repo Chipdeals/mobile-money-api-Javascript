@@ -6,12 +6,48 @@ const ChipdealsJsWidgetSuccessRedirectionUrl =
 
 const ChipdealsJsWidgetLibSrc = document.currentScript.getAttribute("src");
 
-window.onload = async function () {
-  ChipdealsJsWidget.initChipdealsButtonWatching();
-  ChipdealsJsWidget.initChipdealsEventListening();
-};
+const ChipdealsJsWidgetWebhookUrl =
+  document.currentScript.getAttribute("webhookUrl");
+
+const ChipdealsJsWidgetIsTestMode =
+  !!document.currentScript.getAttribute("specialSandbox");
+
+let ChipdealsJsWidgetTestApiUrl = null;
+
+let ChipdealsJsWidgetPaymentPageUrl =
+  "https://rawcdn.githack.com/Chipdeals/mobile-money-api-Javascript/{libVersion}/assets/payment.html";
+
+if (ChipdealsJsWidgetIsTestMode) {
+  ChipdealsJsWidgetPaymentPageUrl =
+    document.currentScript.getAttribute("paymentPageUrl") ||
+    ChipdealsJsWidgetPaymentPageUrl;
+  ChipdealsJsWidgetTestApiUrl =
+    document.currentScript.getAttribute("apiUrl") ||
+    ChipdealsJsWidgetTestApiUrl;
+}
+
+styleCss = `<style>.ChipdealsWidgetLoading {
+  display: inline-block;
+  border: 10px solid rgba(255,255,255,.3);
+  border-radius: 50%;
+  border-top-color: gray;
+  animation: spin 1s ease-in-out infinite;
+  -webkit-animation: spin 1s ease-in-out infinite;
+}
+
+@keyframes spin {
+  to { -webkit-transform: rotate(360deg); }
+}
+@-webkit-keyframes spin {
+  to { -webkit-transform: rotate(360deg); }
+}</style>`;
 
 class ChipdealsJsWidget {
+  static addStyles() {
+    if (!document.querySelector("head")) return;
+    document.querySelector("head").innerHTML += styleCss;
+  }
+
   static initChipdealsButtonWatching() {
     const buttonsSelector = ".chipdeals-button";
     const paymentButtons = document.querySelectorAll(buttonsSelector);
@@ -115,6 +151,7 @@ class ChipdealsJsWidget {
     const currency = element.attributes.currency?.value || "XOF";
     const productName = element.attributes.name?.value || "";
     const addFeesToUser = !!element.attributes.addFeeToUser;
+    const webhookUrl = element.attributes.webhookUrl?.value || "";
     const imgPath = element.attributes.img?.value || "";
     const imgUrl = ChipdealsJsWidget.generateImgUrlFrom(imgPath);
 
@@ -124,6 +161,7 @@ class ChipdealsJsWidget {
       productName,
       imgUrl,
       addFeesToUser,
+      webhookUrl,
     };
     return paymentInfo;
   }
@@ -146,17 +184,77 @@ class ChipdealsJsWidget {
   }
 
   static showPaymentBox(paymentInfo) {
+    const closeComponent = ChipdealsJsWidget.buildPaymentCloseComponent();
+    ChipdealsJsWidget.addCloseComponentAttributes(closeComponent);
+    ChipdealsJsWidget.showCloseComponent(closeComponent);
+
+    const loadingComponent = ChipdealsJsWidget.buildLoadingComponent();
+    ChipdealsJsWidget.addLoadingComponentAttributes(loadingComponent);
+    ChipdealsJsWidget.showLoadingComponent(loadingComponent);
+
     const url = ChipdealsJsWidget.buildPaymentPageUrl(paymentInfo);
     const paymentComponent = ChipdealsJsWidget.createPaymentComponent(url);
     ChipdealsJsWidget.setPaymentComponentAttributes(paymentComponent);
     ChipdealsJsWidget.showPaymentComponent(paymentComponent);
-    const closeComponent = ChipdealsJsWidget.buildPaymentCloseComponent();
-    ChipdealsJsWidget.addCloseComponentAttributes(closeComponent);
-    ChipdealsJsWidget.showCloseComponent(closeComponent);
-    ChipdealsJsWidget.attachPaymentComponentToClose(
+
+    ChipdealsJsWidget.attachComponentsToClose(
       paymentComponent,
-      closeComponent
+      closeComponent,
+      loadingComponent
     );
+  }
+
+  static buildPaymentCloseComponent() {
+    const component = document.createElement("div");
+    component.innerHTML = "&#10006;";
+    return component;
+  }
+
+  static addCloseComponentAttributes(component) {
+    component.style.position = "fixed";
+    component.style.top = "15px";
+    component.style.right = "15px";
+    component.style.zIndex = "100001";
+    component.style.color = "hsl(221deg 10% 90%)";
+    component.style.fontSize = "30px";
+    component.style.lineHeight = "1em";
+    component.style.width = "1em";
+    component.style.textAlign = "center";
+    component.style.cursor = "pointer";
+  }
+
+  static showCloseComponent(component) {
+    document.body.appendChild(component);
+  }
+
+  static buildLoadingComponent() {
+    const component = document.createElement("div");
+    return component;
+  }
+
+  static addLoadingComponentAttributes(component) {
+    component.className = "ChipdealsWidgetLoading";
+    component.style.position = "fixed";
+    component.style.top = "calc(50% - 50px)";
+    component.style.left = "calc(50% - 50px)";
+    component.style.width = "100px";
+    component.style.height = "100px";
+  }
+
+  static showLoadingComponent(component) {
+    document.body.appendChild(component);
+  }
+
+  static attachComponentsToClose(
+    paymentComponent,
+    closeComponent,
+    loadingComponent
+  ) {
+    closeComponent.addEventListener("click", () => {
+      document.body.removeChild(paymentComponent);
+      document.body.removeChild(closeComponent);
+      document.body.removeChild(loadingComponent);
+    });
   }
 
   static buildPaymentPageUrl(paymentInfo) {
@@ -169,19 +267,30 @@ class ChipdealsJsWidget {
       url += "&productName=" + paymentInfo.productName;
     if (paymentInfo.addFeesToUser)
       url += "&addFeesToUser=" + paymentInfo.addFeesToUser;
+    if (paymentInfo.webhookUrl || ChipdealsJsWidgetWebhookUrl) {
+      url +=
+        "&webhookUrl=" +
+        (paymentInfo.webhookUrl || ChipdealsJsWidgetWebhookUrl);
+    }
+    if (ChipdealsJsWidgetIsTestMode) {
+      url += "&sandboxMode=1";
+    }
+    if (ChipdealsJsWidgetIsTestMode && ChipdealsJsWidgetTestApiUrl) {
+      url += "&apiUrl=" + ChipdealsJsWidgetTestApiUrl;
+    }
+    if (ChipdealsJsWidgetIsTestMode && ChipdealsJsWidgetTestApiUrl) {
+      url += "&apiUrl=" + ChipdealsJsWidgetTestApiUrl;
+    }
     return url;
   }
 
   static getPaymentPageBaseUrl() {
     const libVersion = ChipdealsJsWidget.getLibVersion();
-    const chipdealsPaymentPageUrl =
-      "https://rawcdn.githack.com/Chipdeals/mobile-money-api-Javascript/{libVersion}/assets/payment.html";
-    return chipdealsPaymentPageUrl.replace(/{libVersion}/, libVersion);
+    return ChipdealsJsWidgetPaymentPageUrl.replace(/{libVersion}/, libVersion);
   }
 
   static getLibVersion() {
-    const libSrcRegex =
-      /https:\/\/cdn.jsdelivr.net\/gh\/Chipdeals\/mobile-money-api-Javascript@(.+?)\/lib.min.js(.+)?/;
+    const libSrcRegex = /.+@(.+?)\/lib(.min)?.js(.+)?/;
     const libVersion = ChipdealsJsWidgetLibSrc.replace(libSrcRegex, "$1");
     return libVersion;
   }
@@ -199,59 +308,43 @@ class ChipdealsJsWidget {
     component.style.top = "0";
     component.style.left = "0";
     component.style.border = "none";
-    component.style.zIndex = "10000000000000";
+    component.style.zIndex = "100000";
   }
 
   static showPaymentComponent(component) {
     document.body.appendChild(component);
     component.focus();
   }
-
-  static buildPaymentCloseComponent() {
-    const component = document.createElement("div");
-    component.innerHTML = "&#10006;";
-    return component;
-  }
-
-  static addCloseComponentAttributes(component) {
-    component.style.position = "fixed";
-    component.style.top = "15px";
-    component.style.right = "15px";
-    component.style.zIndex = "10000000000001";
-    component.style.color = "hsl(221deg 10% 90%)";
-    component.style.fontSize = "30px";
-    component.style.lineHeight = "1em";
-    component.style.width = "1em";
-    component.style.textAlign = "center";
-    component.style.cursor = "pointer";
-  }
-
-  static showCloseComponent(component) {
-    document.body.appendChild(component);
-  }
-
-  static attachPaymentComponentToClose(paymentComponent, closeComponent) {
-    closeComponent.addEventListener("click", () => {
-      document.body.removeChild(paymentComponent);
-      document.body.removeChild(closeComponent);
-    });
-  }
-
   static initChipdealsEventListening() {
     window.addEventListener("message", ChipdealsJsWidget.onMessage);
   }
 
   static onMessage(event) {
     const eventData = event.data;
+
+    const paymentPageLoaded = "chipdealsIframeEvent-paymentPageLoaded";
     const paymentChangedEvent = "chipdealsIframeEvent-paymentStateChanged";
-    if (eventData?.name == paymentChangedEvent)
+
+    if (eventData?.name == paymentPageLoaded) {
+      document
+        .querySelectorAll(".ChipdealsWidgetLoading")
+        .forEach((loading) => {
+          loading.style.opacity = "0";
+        });
+      return;
+    }
+    if (eventData?.name == paymentChangedEvent) {
       ChipdealsJsWidget.onStateChanged(eventData.detail);
+      return;
+    }
   }
 
   static onStateChanged(eventData) {
     ChipdealsJsWidget.onPaymentStateChanged(eventData);
-    if (eventData.status == "success") ChipdealsJsWidget.onPaymentSucceeded(eventData);
-    else if (eventData.status == "error") ChipdealsJsWidget.onPaymentFailed(eventData);
+    if (eventData.status == "success")
+      ChipdealsJsWidget.onPaymentSucceeded(eventData);
+    else if (eventData.status == "error")
+      ChipdealsJsWidget.onPaymentFailed(eventData);
   }
 
   static onPaymentStateChanged(eventData) {
@@ -262,7 +355,11 @@ class ChipdealsJsWidget {
 
   static onPaymentSucceeded(eventData) {
     if (ChipdealsJsWidgetSuccessRedirectionUrl) {
-      setTimeout(ChipdealsJsWidget.redirectTo, 3000, ChipdealsJsWidgetSuccessRedirectionUrl);
+      setTimeout(
+        ChipdealsJsWidget.redirectTo,
+        3000,
+        ChipdealsJsWidgetSuccessRedirectionUrl
+      );
       return;
     }
     const eventName = "chipdealsPaymentSucceeded";
@@ -280,3 +377,8 @@ class ChipdealsJsWidget {
     window.document.dispatchEvent(failedEvent);
   }
 }
+
+window.onload = async function () {};
+ChipdealsJsWidget.addStyles();
+ChipdealsJsWidget.initChipdealsButtonWatching();
+ChipdealsJsWidget.initChipdealsEventListening();
