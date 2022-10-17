@@ -352,6 +352,70 @@ const app = {
             ],
           },
         },
+        {
+          name: "Senegal",
+          code: "221",
+          display: "Senegal",
+          selectedDisplay: "+221",
+          value: "221",
+          currency: "XOF",
+          svgIcon: `${assetsPath}/images/sn.svg`,
+          paymentMethods: [
+            {
+              name: "FREE",
+              percentFee: 2,
+            },
+            {
+              name: "ORANGE",
+              percentFee: 2,
+            },
+          ],
+          phoneNumberFormatting: {
+            tooLongPhoneNumberTestingRegex: /\d{9}./,
+            toStringRegexReplacements: [
+              {
+                from: /^(\d{3})/,
+                to: "$1-",
+              },
+              {
+                from: /(-\d{3})/,
+                to: "$1-",
+              },
+              {
+                from: /^(.{12}).+?/,
+                to: "$1",
+              },
+            ],
+          },
+        },
+        {
+          name: "Togo",
+          code: "228",
+          display: "Togo",
+          selectedDisplay: "+228",
+          value: "228",
+          currency: "XoF",
+          svgIcon: `${assetsPath}/images/tg.svg`,
+          paymentMethods: [
+            {
+              name: "MOOV",
+              percentFee: 2,
+            },
+          ],
+          phoneNumberFormatting: {
+            tooLongPhoneNumberTestingRegex: /\d{8}./,
+            toStringRegexReplacements: [
+              {
+                from: /(\d{2})/g,
+                to: "$1-",
+              },
+              {
+                from: /^(.{11}).+?/,
+                to: "$1",
+              },
+            ],
+          },
+        },
       ],
       fillCheckoutStep: true,
       currentTransactionStatusCode: 0,
