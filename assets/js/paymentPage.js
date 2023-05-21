@@ -281,6 +281,38 @@ const app = {
           },
         },
         {
+          name: "Burkina Faso",
+          code: "225",
+          display: "Burkina Faso",
+          selectedDisplay: "+225",
+          value: "225",
+          currency: "XOF",
+          svgIcon: `${assetsPath}/images/bf.svg`,
+          paymentMethods: [
+            {
+              name: "ORANGE",
+              percentFee: 2,
+            },
+            {
+              name: "MOOV",
+              percentFee: 2,
+            },
+          ],
+          phoneNumberFormatting: {
+            tooLongPhoneNumberTestingRegex: /\d{8}./,
+            toStringRegexReplacements: [
+              {
+                from: /(\d{2})/g,
+                to: "$1-",
+              },
+              {
+                from: /^(.{11}).+?/,
+                to: "$1",
+              },
+            ],
+          },
+        },
+        {
           name: "Cote d'ivoire",
           code: "225",
           display: "Cote d'ivoire",
