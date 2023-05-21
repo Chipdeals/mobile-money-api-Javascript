@@ -11,7 +11,7 @@ You only need to have basics knowledge in Html and Css. If you Know Javascript, 
 
 ## Demo
 
-You can see the [demo page](https://rawcdn.githack.com/Chipdeals/mobile-money-api-Javascript/1.6.4/demo/index.html) of what you will be able to make
+You can see the [demo page](https://rawcdn.githack.com/Chipdeals/mobile-money-api-Javascript/1.7.1/demo/index.html) of what you will be able to make
 
 ## Integrating the widget is very simple
 
@@ -28,7 +28,7 @@ Test ApiKey: ` ` test_FOdigzgSopV8GZggZa89 ` `
 #Add these payment libraries to your script section. It is either in your head tags or at the end of your body tag
 
 ```html
-<script src="https://cdn.jsdelivr.net/gh/Chipdeals/mobile-money-api-Javascript@1.6.4/lib.min.js" apiKey="test_FOdigzgSopV8GZggZa89" successfulRedirection="https://chipdeals.me/mobile-money">
+<script src="https://cdn.jsdelivr.net/gh/Chipdeals/mobile-money-api-Javascript@1.7.1/lib.min.js" apiKey="test_FOdigzgSopV8GZggZa89" successfulRedirection="https://chipdeals.me/mobile-money">
 </script>
 ```
 
