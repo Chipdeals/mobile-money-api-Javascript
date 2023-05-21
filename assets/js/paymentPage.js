@@ -282,10 +282,10 @@ const app = {
         },
         {
           name: "Burkina Faso",
-          code: "225",
+          code: "226",
           display: "Burkina Faso",
-          selectedDisplay: "+225",
-          value: "225",
+          selectedDisplay: "+226",
+          value: "226",
           currency: "XOF",
           svgIcon: `${assetsPath}/images/bf.svg`,
           paymentMethods: [
