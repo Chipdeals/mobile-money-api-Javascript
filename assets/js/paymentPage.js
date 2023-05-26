@@ -574,6 +574,7 @@ const app = {
           code: 500,
         },
       ],
+      currentTransaction: null
     };
   },
   mounted() {
@@ -584,9 +585,8 @@ const app = {
     async checkout() {
       this.fillCheckoutStep = false;
       this.currentTransactionStatusCode = 202;
-      const phoneNumber = `${
-        this.selectedCountry.code
-      }${this.phoneNumber.replace(/[^\d]/g, "")}`;
+      const phoneNumber = `${this.selectedCountry.code
+        }${this.phoneNumber.replace(/[^\d]/g, "")}`;
 
       const collectionData = {
         senderFirstName: this.firstName,
@@ -606,6 +606,7 @@ const app = {
         this.currentTransactionStatusCode = 500;
         return;
       }
+      this.currentTransaction = collectionResponse.payment
       this.currentTransactionStatusCode =
         collectionResponse.payment.statusMessageCode;
       const collectionReference = collectionResponse.payment.reference;
@@ -613,6 +614,8 @@ const app = {
     },
     async checkCollectionStatus(collectionReference) {
       const statusResponse = await Controller.checkStatus(collectionReference);
+
+      this.currentTransaction = statusResponse.transaction || {}
       const statusCode = statusResponse.transaction?.statusMessageCode || 500;
       this.currentTransactionStatusCode = statusCode;
 
@@ -637,6 +640,7 @@ const app = {
     },
 
     sendTransactionStateChangedEvent() {
+      if (!this.currentTransaction) return
       const paymentChanged = "chipdealsIframeEvent-paymentStateChanged";
       var collectionData = {
         status: this.currentTransactionStatusMessage.status,
@@ -644,6 +648,7 @@ const app = {
         title: this.currentTransactionStatusMessage.title,
         description: this.currentTransactionStatusMessage.description,
         code: this.currentTransactionStatusMessage.code,
+        fullTransaction: JSON.stringify(this.currentTransaction)
       };
       var messageData = {
         name: paymentChanged,

@@ -12,6 +12,11 @@ const ChipdealsJsWidgetWebhookUrl =
 const ChipdealsJsWidgetIsTestMode =
   !!document.currentScript.getAttribute("specialSandbox");
 
+const ChipdealsJsWidgetAttributes = {}
+Object.values(document.currentScript.attributes).forEach((attributeKey) => {
+  ChipdealsJsWidgetAttributes[attributeKey.name] = attributeKey.value
+});
+
 let ChipdealsJsWidgetTestApiUrl = null;
 
 let ChipdealsJsWidgetPaymentPageUrl =
@@ -270,6 +275,14 @@ class ChipdealsJsWidget {
     if (ChipdealsJsWidgetIsTestMode && ChipdealsJsWidgetTestApiUrl) {
       url += "&apiUrl=" + ChipdealsJsWidgetTestApiUrl;
     }
+    Object.keys(ChipdealsJsWidgetAttributes).forEach((attributeKey) => {
+      const defaultAttributes = [
+        'apikey', 'apiurl', 'paymentpageurl', 'specialsandbox', 'src', 'successfulredirection', 'webhookurl',
+      ]
+      if (defaultAttributes.find(attr => attr === attributeKey)) return
+      url += "&" + attributeKey + "=" + encodeURI(ChipdealsJsWidgetAttributes[attributeKey]);
+
+    })
     return url;
   }
 
@@ -351,7 +364,9 @@ class ChipdealsJsWidget {
 
   static onPaymentStateChanged(eventData) {
     const eventName = "chipdealsPaymentUpdated";
-    const updatedEvent = new CustomEvent(eventName, { detail: eventData });
+    const data = JSON.parse(JSON.stringify(eventData))
+    if (data.fullTransaction) data.fullTransaction = JSON.parse(data.fullTransaction)
+    const updatedEvent = new CustomEvent(eventName, { detail: data });
     window.document.dispatchEvent(updatedEvent);
   }
 
@@ -365,7 +380,9 @@ class ChipdealsJsWidget {
       return;
     }
     const eventName = "chipdealsPaymentSucceeded";
-    const successEvent = new CustomEvent(eventName, { detail: eventData });
+    const data = JSON.parse(JSON.stringify(eventData))
+    if (data.fullTransaction) data.fullTransaction = JSON.parse(data.fullTransaction)
+    const successEvent = new CustomEvent(eventName, { detail: data });
     window.document.dispatchEvent(successEvent);
   }
 
@@ -375,12 +392,14 @@ class ChipdealsJsWidget {
 
   static onPaymentFailed(eventData) {
     const eventName = "chipdealsPaymentFailed";
-    const failedEvent = new CustomEvent(eventName, { detail: eventData });
+    const data = JSON.parse(JSON.stringify(eventData))
+    if (data.fullTransaction) data.fullTransaction = JSON.parse(data.fullTransaction)
+    const failedEvent = new CustomEvent(eventName, { detail: data });
     window.document.dispatchEvent(failedEvent);
   }
 }
 
-window.onload = async function () {};
+window.onload = async function () { };
 ChipdealsJsWidget.addStyles();
 ChipdealsJsWidget.initChipdealsButtonWatching();
 ChipdealsJsWidget.initChipdealsEventListening();
